@@ -1,4 +1,4 @@
-#Mathematical calculations for reference
+#Mathematical calculations for reference in this program
 #regular pay = regular rate * hours worked
 #overtime rate = hourly rate * OT multiple
 #gross pay = regular pay + overtime pay
