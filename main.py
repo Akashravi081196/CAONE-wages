@@ -33,40 +33,52 @@ class Employee:
         Overtimeworked = HoursWorked - self.__RegHours
         print(Overtimeworked)
 
+        # overtime rate calculation
         Overtimerate = self.__HourlyRate * self.__OTMultiple
         print(Overtimerate)
 
+        #Regularpay calculation
         Regularpay = self.__RegHours * self.__HourlyRate
         print(Regularpay)
 
+        #Overtimepay calculation
         Overtimepay = Overtimerate * Overtimeworked
         print(Overtimepay)
 
+        #Grosspay calculation
         GrossPay = Regularpay + Overtimepay
         print(GrossPay)
 
+        #Higherrate pay calculation
         Higherratepay = GrossPay - self.__StandardBand
         print(Higherratepay)
 
+        #Standard tax calculation 20% of grosspay(20% = 0.2)
         Standardtax = GrossPay * 0.2
         roundstandardtax = round(Standardtax)
         print(roundstandardtax)
 
+        # Higher tax calculation 40% of Higherratepay(40% = 0.4)
         Highertax = Higherratepay * 0.4
         print(Highertax)
 
+        #Total taxt calculation
         Totaltax = roundstandardtax + Highertax
         print(Totaltax)
 
+        #Nettax calculation
         Nettax = Totaltax - self.__TaxCredit
         print(Nettax)
 
+        #PRSI Calculation 4% of Grosspay (4% =0.04)
         PRSI = GrossPay * 0.04
         print(PRSI)
 
+        #Netdeduction calculation
         Netdeduction = Nettax + PRSI
         print(Netdeduction)
 
+        #Netpay calculation
         NetPay = GrossPay - Netdeduction
         print(NetPay)
 
