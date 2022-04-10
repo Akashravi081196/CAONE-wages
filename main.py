@@ -30,7 +30,10 @@ class Employee:
 
     def computePayment(self, HoursWorked, Date):
         #Overtime worked calculation
-        Overtimeworked = HoursWorked - self.__RegHours
+        if (self.__RegHours > HoursWorked):
+            raise ValueError("Regular Hours Worked should never exceed hours worked")
+        else:
+            Overtimeworked = HoursWorked - self.__RegHours
         #print(Overtimeworked)
 
         # overtime rate calculation
@@ -44,6 +47,7 @@ class Employee:
         #Overtimepay calculation
         Overtimepay = Overtimerate * Overtimeworked
         #print(Overtimepay)
+
 
         #Grosspay calculation
         GrossPay = Regularpay + Overtimepay
@@ -61,6 +65,7 @@ class Employee:
         # Higher tax calculation 40% of Higherratepay(40% = 0.4)
         Highertax = Higherratepay * 0.4
         #print(Highertax)
+
 
         #Total taxt calculation
         Totaltax = roundstandardtax + Highertax
@@ -81,6 +86,7 @@ class Employee:
         #Netpay calculation
         NetPay = GrossPay - Netdeduction
         #print(NetPay)
+
         employeeDict = {
             "name": self.__FirstName + " " + self.__LastName,
             "Date": Date,
@@ -111,10 +117,11 @@ class Employee:
 
 #TEST METHODS
 
-class testEmployee(unittest.TestCase):
+class test_employeetestclass(unittest.TestCase):
 
-    # Net pay cannot exceed gross pay
-    def testNetpaycannotexceedgrosspay(self):
-        e = Employee(12345, 'Green', 'Joe', 37, 16, 1.5, 72, 710)
-        pi = e.computePayment(42, '31/10/2021')
-        self.assertLessEqual(pi['NetPay'], pi['GrossPay'])
+    # Testing1 = Regular Hours should never exceed hours worked
+    def test_regularhoursworkedshouldneverexceedhoursworked(self):
+            e = Employee(12345, 'Green', 'Joe', 73, 16, 1.5, 72, 710)
+            pi = e.computePayment(42, '31/10/2021')
+            self.assertLessEqual(pi["Regular Hours Worked"], pi["Hours Worked"])
+
