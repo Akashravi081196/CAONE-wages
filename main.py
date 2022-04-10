@@ -28,62 +28,86 @@ class Employee:
         self.__TaxCredit = TaxCredit
         self.__StandardBand = StandardBand
 
-    def computePayment(self, HoursWorked, date):
+    def computePayment(self, HoursWorked, Date):
         #Overtime worked calculation
         Overtimeworked = HoursWorked - self.__RegHours
-        print(Overtimeworked)
+        #print(Overtimeworked)
 
         # overtime rate calculation
         Overtimerate = self.__HourlyRate * self.__OTMultiple
-        print(Overtimerate)
+        #print(Overtimerate)
 
         #Regularpay calculation
         Regularpay = self.__RegHours * self.__HourlyRate
-        print(Regularpay)
+        #print(Regularpay)
 
         #Overtimepay calculation
         Overtimepay = Overtimerate * Overtimeworked
-        print(Overtimepay)
+        #print(Overtimepay)
 
         #Grosspay calculation
         GrossPay = Regularpay + Overtimepay
-        print(GrossPay)
+        #print(GrossPay)
 
         #Higherrate pay calculation
         Higherratepay = GrossPay - self.__StandardBand
-        print(Higherratepay)
+        #print(Higherratepay)
 
         #Standard tax calculation 20% of grosspay(20% = 0.2)
         Standardtax = GrossPay * 0.2
         roundstandardtax = round(Standardtax)
-        print(roundstandardtax)
+        #print(roundstandardtax)
 
         # Higher tax calculation 40% of Higherratepay(40% = 0.4)
         Highertax = Higherratepay * 0.4
-        print(Highertax)
+        #print(Highertax)
 
         #Total taxt calculation
         Totaltax = roundstandardtax + Highertax
-        print(Totaltax)
+        #print(Totaltax)
 
         #Nettax calculation
         Nettax = Totaltax - self.__TaxCredit
-        print(Nettax)
+        #print(Nettax)
 
         #PRSI Calculation 4% of Grosspay (4% =0.04)
         PRSI = GrossPay * 0.04
-        print(PRSI)
+        #print(PRSI)
 
         #Netdeduction calculation
         Netdeduction = Nettax + PRSI
-        print(Netdeduction)
+        #print(Netdeduction)
 
         #Netpay calculation
         NetPay = GrossPay - Netdeduction
-        print(NetPay)
+        #print(NetPay)
+        employeeDict = {
+            "name": self.__FirstName + " " + self.__LastName,
+            "Date": Date,
+            "Hours Worked": HoursWorked,
+            "Regular Hours Worked": self.__RegHours,
+            "Overtime Hours Worked": Overtimeworked,
+            "Regular Rate": self.__HourlyRate,
+            "Overtime Rate": Overtimerate,
+            "Regular Pay": Regularpay,
+            "Overtime Pay": Overtimepay,
+            "Gross Pay": GrossPay,
+            "Standard Rate Pay": self.__StandardBand,
+            "Higher Rate Pay": Higherratepay,
+            "Standard Tax": roundstandardtax,
+            "Higher Tax": Highertax,
+            "Total Tax": Totaltax,
+            "Tax Credit": self.__TaxCredit,
+            "Net Tax": Nettax,
+            "PRSI": PRSI,
+            "Net Deductions": Netdeduction,
+            "Net Pay": NetPay
+        }
 
-e = Employee(12345, 'Green', 'Joe', 37, 16, 1.5, 72, 710)
-e.computePayment(42, '31/10/2022')
+        print(employeeDict)
+
+        return employeeDict
+
 
 #TEST METHODS
 
@@ -91,6 +115,6 @@ class testEmployee(unittest.TestCase):
 
     # Net pay cannot exceed gross pay
     def testNetpaycannotexceedgrosspay(self):
-        e = Employee(12345,'Green','Joe', 37, 16, 1.5, 72, 710)
+        e = Employee(12345, 'Green', 'Joe', 37, 16, 1.5, 72, 710)
         pi = e.computePayment(42, '31/10/2021')
-        self.assertLessEqual(pi['Net Pay'], pi['Gross Pay'])
+        self.assertLessEqual(pi['NetPay'], pi['GrossPay'])
