@@ -46,6 +46,8 @@ class Employee:
 
         #Overtimepay calculation
         Overtimepay = Overtimerate * Overtimeworked
+        if (Overtimepay < 0):
+            raise ValueError('Overtimepay should not be negative')
         #print(Overtimepay)
 
 
@@ -64,6 +66,8 @@ class Employee:
 
         # Higher tax calculation 40% of Higherratepay(40% = 0.4)
         Highertax = Higherratepay * 0.4
+        if (Highertax < 0):
+            raise ValueError("highertax should not be negative")
         #print(Highertax)
 
 
@@ -84,7 +88,12 @@ class Employee:
         #print(Netdeduction)
 
         #Netpay calculation
-        NetPay = GrossPay - Netdeduction
+        if (Netdeduction > 0):
+            raise ValueError("netpay should not be negative")
+        else:
+            NetPay = GrossPay - Netdeduction
+        if (Netdeduction < 0):
+            raise ValueError("netpay should never exceed grosspay")
         #print(NetPay)
 
         employeeDict = {
@@ -119,9 +128,34 @@ class Employee:
 
 class test_employeetestclass(unittest.TestCase):
 
-    # Testing1 = Regular Hours should never exceed hours worked
+    # Testing1 = Higher Tax should not be negative.
+    def test_highertaxshouldnotbenegative(self):
+        e = Employee(12345, 'Green', 'Joe', 37, 16, 1.5, 72, 715)
+        pi = e.computePayment(42, '31/10/2021')
+        self.assertLessEqual(0, pi["Higher Tax"])
+
+    # Testing2 = Net pay should never exceed Gross Pay
+    def test_netpayshouldneverexceedgrosspay(self):
+        e = Employee(12345, 'Green', 'Joe', 37, 16, 1.5, 550, 710)
+        pi = e.computePayment(42, '31/10/2021')
+        self.assertLessEqual(pi['Net Pay'], pi['Gross Pay'])
+
+    # Testing3 =  Net Pay should not be negative
+    def test_netpayshouldnotbenegative(self):
+        e = Employee(12345, 'Green', 'Joe', 37, 16, 1.5, 72, 710)
+        pi = e.computePayment(42, '31/10/2021')
+        self.assertLessEqual(0, pi["Net Pay"])
+
+    # Testing4 = Overtime pay should not be negative.
+    def test_overtimepayshouldnotbenegative(self):
+        e = Employee(12345, 'Green', 'Joe', 37, -16, 1.5, 72, 710)
+        pi = e.computePayment(42, '31/10/2021')
+        self.assertLessEqual(0, pi["Overtime Pay"])
+
+    # Testing5 = Regular Hours should never exceed hours worked
     def test_regularhoursworkedshouldneverexceedhoursworked(self):
             e = Employee(12345, 'Green', 'Joe', 73, 16, 1.5, 72, 710)
             pi = e.computePayment(42, '31/10/2021')
             self.assertLessEqual(pi["Regular Hours Worked"], pi["Hours Worked"])
 
+unittest.main(argv=['ignored'], exit=False)
